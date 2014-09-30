@@ -1,0 +1,42 @@
+package com.zaq.ihttp.web;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.zaq.ihttp.util.ActionUtil;
+
+/**
+ * httpService接口类
+ * @author zaqzaq
+ * chain 在一条动作链里，允许把另一个包里的某个动作作为下一个动作，但是前提是必须正确的给出目标动作的namespace和actionName参数
+ */
+@Deprecated
+public class HttpServiceAction{
+	private final static String SUCCESS="success";
+	private String jsonString;
+//	private String forWardPath;
+//	private String actionName;
+//	private String namespace;
+	public String execute(){
+		
+		String uri=ServletActionContext.getRequest().getRequestURL().toString();
+		System.out.println(uri);
+		uri=uri.replaceAll(".do", "");
+		
+//		jsonString=ActionUtil.getActionOutVal(uri);
+		/*
+		setForWardPath();
+		String[] args=getForWardPath().split("/");
+		System.out.println(getForWardPath());
+		setNamespace("/"+args[0]);
+		setActionName(args[1]);
+		*/
+		return SUCCESS;
+	}
+	public String getJsonString() {
+		return jsonString;
+	}
+	public void setJsonString(String jsonString) {
+		this.jsonString = jsonString;
+	}
+	
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://www.springframework.org/schema/context
+	     http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	     http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	     http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">      
+	<aop:config>
+		<aop:pointcut id="servicePointCut4" expression="execution(* com.zaq.ihttp.web.service..*(..))"/>
+		<aop:advisor advice-ref="txAdviceHttpService" pointcut-ref="servicePointCut4"/>
+	</aop:config>
+	<tx:advice id="txAdviceHttpService" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="query*" read-only="true"/>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+	<!-- htttpService工具类-->
+   <bean id="httpServiceUtil" class="com.zaq.ihttp.util.HttpServiceUtil"/>
+   <!-- 防火墙service-->
+   <bean id="fireWallService" class="com.zaq.ihttp.web.service.impl.FireWallService">
+   		<property name="sessionFactory" ref="sessionFactory"/>
+   </bean>
+   <!-- 分布式事务提交信息service-->
+   <bean id="commitService" class="com.zaq.ihttp.web.service.impl.CommitService">
+   		<property name="sessionFactory" ref="sessionFactory"/>
+   </bean>
+   
+   <!-- 分布式事务封装处理service-->
+   <bean id="transactionService" class="com.zaq.ihttp.web.service.impl.TransactionService">
+   </bean>
+ </beans>

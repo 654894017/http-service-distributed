@@ -1,0 +1,7 @@
+package com.zaq.ihttp.web;
+
+
+public interface IHttpUpdateService<T> {
+	public long updatePrepare(T obj);
+	public long update(long seqId);
+}
