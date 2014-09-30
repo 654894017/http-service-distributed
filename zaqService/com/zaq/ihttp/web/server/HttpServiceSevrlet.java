@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.zaq.ihttp.util.HttpServiceUtil;
 import com.zaq.ihttp.util.HttpUtil;
@@ -21,6 +22,7 @@ import com.zaq.ihttp.web.service.impl.FireWallService;
  * @author zaqzaq
  */
 public class HttpServiceSevrlet extends HttpServlet{
+	private Logger logger=Logger.getLogger(getClass());
 	private static final long serialVersionUID = 1L;
 	public String execute(HttpServletRequest req){
 		String uri=req.getRequestURL().toString();
@@ -66,17 +68,22 @@ public class HttpServiceSevrlet extends HttpServlet{
 		 String userName=null;
 		 String pwd=null;
 		 //从cookie中获取用户密码信息
-		 for(Cookie c:request.getCookies()){
-			if(HttpUtil.COOKIE_USERNAME.equals(c.getName())){
-				userName=c.getValue();
-			}
-			if(HttpUtil.COOKIE_PWD.equals(c.getName())){
-				pwd=c.getValue();
-			}
-			if(StringUtils.isNotEmpty(userName)&&StringUtils.isNotEmpty(pwd)){
-				break;
-			}
+		 if(null!=request.getCookies()){
+			 for(Cookie c:request.getCookies()){
+					if(HttpUtil.COOKIE_USERNAME.equals(c.getName())){
+						userName=c.getValue();
+						continue;
+					}
+					if(HttpUtil.COOKIE_PWD.equals(c.getName())){
+						pwd=c.getValue();
+						continue;
+					}
+					if(StringUtils.isNotEmpty(userName)&&StringUtils.isNotEmpty(pwd)){
+						break;
+					}
+				 }
 		 }
+
 		 
 		if(StringUtils.isEmpty(userName)||StringUtils.isEmpty(pwd)){
 			retBoo=false;
@@ -92,6 +99,10 @@ public class HttpServiceSevrlet extends HttpServlet{
 					 retBoo=pwd.equals(firewall.getPwd());
 				 }
 			 }
+		}
+		
+		if(!retBoo){
+			logger.info("拦截请求ip"+remoteIP+"用户："+userName);
 		}
 		
 		return retBoo;
