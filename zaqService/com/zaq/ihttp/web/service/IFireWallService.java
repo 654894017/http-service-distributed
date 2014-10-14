@@ -19,4 +19,8 @@ public interface IFireWallService{
 	 * @param firewall
 	 */
 	public void save(HttpServiceFirewall firewall);
+	/**
+	 * 清除缓存
+	 */
+	public void clearCache();
 }
