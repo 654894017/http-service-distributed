@@ -69,11 +69,4 @@ public interface ITransactionService<T>{
 	 */
 	public RetObj<T> query(String host,String packagez,String action,NameValuePair... parms);
 
-
-	/**
-	 * 通用的分布式业务处理
-	 * @param commands 需要处理的多个事务命令 
-	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
-	 */
-	public boolean callCommon(TransactionCommand... commands);
 }

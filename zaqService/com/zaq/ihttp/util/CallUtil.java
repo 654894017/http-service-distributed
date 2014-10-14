@@ -119,7 +119,7 @@ public class CallUtil {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("回调业务处理失败", e);//FIXME 极为重要的日志
+			logger.error("【FIXME 极为重要的日志】回调业务处理失败", e);//FIXME 极为重要的日志
 		}
 		return retBoo;
 	};
@@ -153,9 +153,9 @@ public class CallUtil {
 		}
 
 		long retLong = Long.parseLong(retSeqId);
-		if (retLong < 0) {
-			throw new ZAQhttpException("接口返回异常代码：" + retSeqId);
-		}
+//		if (retLong < 0) {
+//			throw new ZAQhttpException("接口返回异常代码：" + retSeqId);
+//		}
 		return retLong;
 	};
 	

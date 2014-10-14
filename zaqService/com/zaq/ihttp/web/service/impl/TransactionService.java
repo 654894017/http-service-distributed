@@ -79,7 +79,7 @@ public class TransactionService<T> implements ITransactionService<T>{
 	}
 	
 	/**
-	 * 分布式业务处理【删除】  。。。。些方法未开启事务
+	 * 分布式业务处理  。。。。此方法未开启事务------供外层无事务的类使用。。。eg:com.zaq.oa.OaBaseServiceImpl.callCommon()
 	 * @param host
 	 *            应用名
 	 * @param packagez
@@ -90,10 +90,8 @@ public class TransactionService<T> implements ITransactionService<T>{
 	 *            要保存的对象
 	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
 	 */
-	/*
-	*/
-	@Override
-	public boolean callCommon(TransactionCommand... commands){
+	@Deprecated
+	private boolean callCommon(TransactionCommand... commands){
 			return saveReCall(prepareTransaction(commands));
 	}
 }

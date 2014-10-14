@@ -2,6 +2,7 @@ package com.zaq.oa;
 
 
 import com.xpsoft.core.service.BaseService;
+import com.zaq.ihttp.web.TransactionCommand;
 import com.zaq.ihttp.web.model.HttpServiceCommit;
 import com.zaq.ihttp.web.service.ITransactionService;
 
@@ -34,4 +35,10 @@ public interface OaBaseService<T> extends BaseService<T>,ITransactionService<T>{
 	 */
 	public HttpServiceCommit removeWithLocal(final String host,final String packagez,final String action,final Long... ids)throws Exception;
 	
+	/**
+	 * 通用的分布式业务处理
+	 * @param commands 需要处理的多个事务命令 
+	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
+	 */
+	public boolean callCommon(TransactionCommand... commands);
 }
