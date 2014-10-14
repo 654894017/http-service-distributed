@@ -4,8 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import com.xpsoft.core.web.paging.PagingBean;
@@ -28,7 +27,7 @@ public abstract class OaBaseAction<T> extends HttpServiceBaseAction<T>{
 	  protected Integer start = Integer.valueOf(0);
 	  protected String jsonString;
 	  private static final long serialVersionUID = 1L;
-	  protected final transient Log logger = LogFactory.getLog(super.getClass());
+	  protected final transient Logger logger = Logger.getLogger(super.getClass());
 	  public final String CANCEL = "cancel";
 	  public final String VIEW = "view";
 
