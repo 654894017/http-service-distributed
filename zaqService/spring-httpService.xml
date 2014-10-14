@@ -11,8 +11,8 @@
 	     http://www.springframework.org/schema/aop
          http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">      
 	<aop:config>
-		<aop:pointcut id="servicePointCut4" expression="execution(* com.zaq.ihttp.web.service..*(..))"/>
-		<aop:advisor advice-ref="txAdviceHttpService" pointcut-ref="servicePointCut4"/>
+		<aop:pointcut id="httpServicePointCut" expression="execution(* com.zaq.ihttp.web.service..*(..))"/>
+		<aop:advisor advice-ref="txAdviceHttpService" pointcut-ref="httpServicePointCut"/>
 	</aop:config>
 	<tx:advice id="txAdviceHttpService" transaction-manager="txManager">
 		<tx:attributes>
