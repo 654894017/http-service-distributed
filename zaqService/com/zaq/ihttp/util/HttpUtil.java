@@ -50,7 +50,7 @@ public class HttpUtil {
     private static int TIME_OUT_GET_POOL = 3000; 
     /* http连接超时 */
     private static int TIME_OUT_HTTP_CONNECT = 3000; 
-    /* http请求超时 */
+    /* http处理超时 */
     private static int TIME_OUT_HTTP_PROCESS = 4000; 
 	private static String User_Agent="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36";
 
