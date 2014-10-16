@@ -2,6 +2,7 @@ package com.zaq.oa;
 
 
 import com.xpsoft.core.service.BaseService;
+import com.zaq.ihttp.web.OpeaterInTransaction;
 import com.zaq.ihttp.web.TransactionCommand;
 import com.zaq.ihttp.web.model.HttpServiceCommit;
 import com.zaq.ihttp.web.service.ITransactionService;
@@ -48,4 +49,15 @@ public interface OaBaseService<T> extends BaseService<T>,ITransactionService<T>{
 	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
 	 */
 	public boolean callCommonWithThread(TransactionCommand localCommand,TransactionCommand...commands);
+	/**
+	 * 通用的分布式业务处理 按多线程方式执行(提高执行效率)
+	 * （用于调用远程save操作时记录远程数据的真实id到本地）
+	 * @param opeaterInTransaction
+	 *          远程事务提交后的业务操作
+	 * @param localCommand 需要处理的本地事务命令
+	 * @param commands 需要处理的多个事务命令 
+	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
+	 */
+	public boolean callCommonWithThread(OpeaterInTransaction opeaterInTransaction,TransactionCommand localCommand,TransactionCommand...commands);
+
 }

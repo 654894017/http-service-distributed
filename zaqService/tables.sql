@@ -24,3 +24,9 @@ PRIMARY KEY (`id`)
 )
 ;
 
+
+ALTER TABLE `http_service_commit`
+ADD COLUMN `localObjJson` text  NULL COMMENT '本地对象json' AFTER `errorCode`,
+ADD COLUMN `localObjClassName`  varchar(1024) NULL COMMENT '本地对象类名' AFTER `localObjId`;
+
+

@@ -35,6 +35,17 @@ public class HttpServiceCommit implements Serializable {
 	protected Integer countReSend;
 	@Expose
 	protected String errorCode;
+	@Expose
+	protected String localObjClassName;
+	@Expose
+	protected String localObjJson;
+	
+	/**
+	 * Default Empty Constructor for class HttpServiceCommit
+	 */
+	public HttpServiceCommit () {
+		super();
+	}
 	
 	public HttpServiceCommit(String host, String packagez, String action, String method, Long seqId) {
 		super();
@@ -47,12 +58,19 @@ public class HttpServiceCommit implements Serializable {
 		this.countReSend=0;
 		this.uri=HttpServiceUtil.packageUri(HttpServiceConf.getMyPro(host, "httpUri", ""), packagez, action, method);
 	}
-
-	/**
-	 * Default Empty Constructor for class HttpServiceCommit
-	 */
-	public HttpServiceCommit () {
+	public HttpServiceCommit(String host, String packagez, String action, String method, Long seqId,String localObjClassName,String localObjJson) {
 		super();
+		this.host = host;
+		this.packagez = packagez;
+		this.action = action;
+		this.method = method;
+		this.seqId = seqId;
+		this.timeCreate=new Date();
+		this.countReSend=0;
+		this.uri=HttpServiceUtil.packageUri(HttpServiceConf.getMyPro(host, "httpUri", ""), packagez, action, method);
+		
+		this.localObjClassName=localObjClassName;
+		this.localObjJson=localObjJson;
 	}
 	
 	public String getErrorCode() {
@@ -82,6 +100,21 @@ public class HttpServiceCommit implements Serializable {
 		return this.id;
 	}
 	
+	public String getLocalObjClassName() {
+		return localObjClassName;
+	}
+
+	public void setLocalObjClassName(String localObjClassName) {
+		this.localObjClassName = localObjClassName;
+	}
+
+
+	public String getLocalObjJson() {
+		return localObjJson;
+	}
+	public void setLocalObjJson(String localObjJson) {
+		this.localObjJson = localObjJson;
+	}
 	/**
 	 * Set the id
 	 */	

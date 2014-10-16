@@ -77,10 +77,10 @@ public class HttpServiceCall<T> extends CallUtil{
 	 * @return
 	 */
 	public HttpServiceCommit callSaveOrUpdatePrepare(String host, String packagez, String action, T obj) {
-		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		return call(host, packagez, action, HttpServiceMethod.saveOrUpdatePrepare, new BasicNameValuePair(HttpServiceUtil.HTTP_ARG_JSONOBJ, gson.toJson(obj)));
+		Gson gsonRemote = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		Gson gsonLocal = new Gson();
+		return call(host, packagez, action, HttpServiceMethod.saveOrUpdatePrepare,obj.getClass().getName(),gsonLocal.toJson(obj), new BasicNameValuePair(HttpServiceUtil.HTTP_ARG_JSONOBJ, gsonRemote.toJson(obj)));
 	}
-	
 	/**
 	 * del操作：预处理 保存调用信息 与本地业务数据保存在一个事务中
 	 * 

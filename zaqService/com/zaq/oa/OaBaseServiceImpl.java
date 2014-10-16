@@ -7,6 +7,7 @@ import com.xpsoft.core.service.impl.BaseServiceImpl;
 import com.zaq.ihttp.util.CallUtil;
 import com.zaq.ihttp.util.HttpServiceUtil;
 import com.zaq.ihttp.web.IcallBack;
+import com.zaq.ihttp.web.OpeaterInTransaction;
 import com.zaq.ihttp.web.RetObj;
 import com.zaq.ihttp.web.TransactionCommand;
 import com.zaq.ihttp.web.model.HttpServiceCommit;
@@ -100,6 +101,10 @@ public abstract class OaBaseServiceImpl<T> extends BaseServiceImpl<T> implements
 	public boolean saveReCall(HttpServiceCommit[] commits,IcallBack... calls){
 		 return call.saveReCall(commits,calls);
 	}
+	
+	public boolean saveReCall(HttpServiceCommit[] commits,OpeaterInTransaction opeaterInTransaction,IcallBack... calls){
+		 return call.saveReCall(commits,opeaterInTransaction,calls);
+	}
 	/**
 	 * 分布式业务处理【删除】  。。。。些方法未开启事务
 	 * @param host
@@ -115,12 +120,17 @@ public abstract class OaBaseServiceImpl<T> extends BaseServiceImpl<T> implements
 	/*
 	*/
 	@Override
+	@Deprecated
 	public boolean callCommon(TransactionCommand... commands){
 			return saveReCall(prepareTransaction(commands));
 	}
 	@Override
 	public boolean callCommonWithThread(TransactionCommand localCommand,TransactionCommand...commands){
 		return saveReCall(prepareTransactionWithThread(localCommand, commands));
+	}
+	@Override
+	public boolean callCommonWithThread(OpeaterInTransaction opeaterInTransaction,TransactionCommand localCommand,TransactionCommand...commands){
+		return saveReCall(prepareTransactionWithThread(localCommand, commands),opeaterInTransaction);
 	}
 	/**
 	 * 查询接口

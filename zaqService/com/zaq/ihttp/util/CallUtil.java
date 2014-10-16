@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import com.zaq.ihttp.web.HttpServiceMethod;
 import com.zaq.ihttp.web.IcallBack;
+import com.zaq.ihttp.web.OpeaterInTransaction;
 import com.zaq.ihttp.web.RetObj;
 import com.zaq.ihttp.web.ZAQhttpException;
 import com.zaq.ihttp.web.client.HttpServiceCall;
@@ -85,6 +86,23 @@ public class CallUtil {
 	}
 	
 	/**
+	 * 预处理公共类（用于远程save操作时保存上下文对象）
+	 * @param host
+	 * @param packagez
+	 * @param action
+	 * @param methodPrepare
+	 * @param parms
+	 * @return
+	 */
+	public static HttpServiceCommit call(String host, String packagez, String action,HttpServiceMethod methodPrepare,String localObjClassName,String localObjJson, NameValuePair... parms) {
+		HttpServiceCommit httpServiceCommit=call(host, packagez, action, methodPrepare, parms);
+		httpServiceCommit.setLocalObjClassName(localObjClassName);
+		httpServiceCommit.setLocalObjJson(localObjJson);
+		return httpServiceCommit;
+
+	}
+	
+	/**
 	 * 提交分布式事务
 	 * 
 	 * @param commit
@@ -102,7 +120,51 @@ public class CallUtil {
 //				commitService = (CommitService) HttpServiceUtil.getBean("commitService");
 //			}
 			
-			if (retCode > 0 && retCode == commit.getSeqId()) {
+			if (retCode > 0) {// && retCode == commit.getSeqId()
+				// 清除本地信息 操作成功返回true 失败记录log日志
+				commitService.del(commit);
+				retBoo = true;
+			} else {
+				// 更新本条业务数据的重调次数+1 并追加返回的错误码 超过最大错误限制将触发回调事件
+				commit = commitService.reSendAdd(commit.getId(),retCode);
+				if (Integer.parseInt(HttpServiceConf.getPro("TRIGGER_EVENT_TIMES", 3 + "")) < commit.getCountReSend()) {
+					// 线程池中多线程执行
+					for (final IcallBack callBack : calls) {
+						ThreadPool.execute(new Runnable() {
+							@Override
+							public void run() {
+								callBack.call();
+							}
+						});
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("【FIXME 极为重要的日志】回调业务处理失败", e);//FIXME 极为重要的日志
+		}
+		return retBoo;
+	};
+	
+	/**
+	 * 提交分布式事务
+	 * （用于调用远程save操作时记录远程数据的真实id到本地）
+	 * @param commit
+	 *            提交内容序列 
+	 * @param opeaterInTransaction
+	 *            远程事务提交后的业务操作        
+	 * @param calls    超过【TRIGGER_EVENT_TIMES】次触发
+	 *            回调方法
+	 * @return 返回提交事务是否成功
+	 */
+	public static boolean reCall(HttpServiceCommit commit,OpeaterInTransaction opeaterInTransaction, IcallBack... calls) {
+		boolean retBoo = false;
+		try {
+			String retSeqId = HttpUtil.httpPost(commit.getHost(), commit.getUri(), new BasicNameValuePair(HttpServiceUtil.HTTP_ARG_SEQID, commit.getSeqId() + ""));
+			long retCode = retCode(retSeqId);
+			if (retCode > 0) {
+				
+				//执行远程事务提交后的业务操作
+				opeaterInTransaction.execute(commit,retCode);
 				// 清除本地信息 操作成功返回true 失败记录log日志
 				commitService.del(commit);
 				retBoo = true;
@@ -201,5 +263,4 @@ public class CallUtil {
 		}
 		return obj;
 	}
-	
 }

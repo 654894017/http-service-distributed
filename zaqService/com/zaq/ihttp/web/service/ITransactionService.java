@@ -4,6 +4,7 @@ package com.zaq.ihttp.web.service;
 import org.apache.http.NameValuePair;
 
 import com.zaq.ihttp.web.IcallBack;
+import com.zaq.ihttp.web.OpeaterInTransaction;
 import com.zaq.ihttp.web.RetObj;
 import com.zaq.ihttp.web.TransactionCommand;
 import com.zaq.ihttp.web.model.HttpServiceCommit;
@@ -65,6 +66,18 @@ public interface ITransactionService<T>{
 	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
 	 */
 	public boolean saveReCall(HttpServiceCommit[] commits,IcallBack... calls);
+	
+	/**
+	 * 开启分布式提交所有操作的事务
+	 * （用于调用远程save操作时记录远程数据的真实id到本地）
+	 * @param commits 所有操作
+	 * @param opeaterInTransaction
+	 *        	远程事务提交后的业务操作 
+	 * @param calls 失败超过最大限制TRIGGER_EVENT_TIMES的回调方法
+	 * @return 返回分布式业务处理流程是否成功  false 表示预处理成功，提交失败，可以手动再提交
+	 */
+	public boolean saveReCall(HttpServiceCommit[] commits,OpeaterInTransaction opeaterInTransaction,IcallBack... calls);
+	
 	/**
 	 * 查询接口
 	 * @param host

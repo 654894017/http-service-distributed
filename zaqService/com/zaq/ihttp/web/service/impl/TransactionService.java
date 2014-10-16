@@ -17,6 +17,7 @@ import com.zaq.ihttp.util.HttpServiceUtil;
 import com.zaq.ihttp.util.HttpUtil;
 import com.zaq.ihttp.util.ThreadPool;
 import com.zaq.ihttp.web.IcallBack;
+import com.zaq.ihttp.web.OpeaterInTransaction;
 import com.zaq.ihttp.web.RetObj;
 import com.zaq.ihttp.web.TransactionCommand;
 import com.zaq.ihttp.web.ZAQhttpException;
@@ -140,6 +141,18 @@ public class TransactionService<T> implements ITransactionService<T>{
 		 for(HttpServiceCommit commit:commits){
 			 if(null!=commit){
 				 if(!call.reCall(commit,calls)){
+					 retBoo=false;
+				 }
+			 }
+		 }
+		 return retBoo;
+	}
+	@Override
+	public boolean saveReCall(HttpServiceCommit[] commits,OpeaterInTransaction opeaterInTransaction,IcallBack... calls){
+		 boolean retBoo=true;
+		 for(HttpServiceCommit commit:commits){
+			 if(null!=commit){
+				 if(!call.reCall(commit,opeaterInTransaction,calls)){
 					 retBoo=false;
 				 }
 			 }
