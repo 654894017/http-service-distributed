@@ -1,7 +1,6 @@
 package com.zaq.oa;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import com.xpsoft.core.dao.GenericDao;
 import com.xpsoft.core.service.impl.BaseServiceImpl;
@@ -31,6 +30,10 @@ public abstract class OaBaseServiceImpl<T> extends BaseServiceImpl<T> implements
 		return call.prepareTransaction(commands);
 	}
 	
+	@Override
+	public HttpServiceCommit[] prepareTransactionWithThread(TransactionCommand localCommand,TransactionCommand...commands){
+		return call.prepareTransactionWithThread(localCommand,commands);
+	}
 	/**
 	 * 组装【保存或更新】操作事务 与本地业务数据保存在一个事务中
 	 * @param host
@@ -86,7 +89,7 @@ public abstract class OaBaseServiceImpl<T> extends BaseServiceImpl<T> implements
 				return call.prepareRemove(host, packagez, action, ids);
 	}
 	@Override
-	public HttpServiceCommit prepareRemove(String host, String packagez, String action, Long... ids) throws Exception {
+	public HttpServiceCommit prepareRemove(String host, String packagez, String action, Long... ids){
 		return call.prepareRemove(host, packagez, action, ids);
 	}
 	/**
@@ -115,7 +118,10 @@ public abstract class OaBaseServiceImpl<T> extends BaseServiceImpl<T> implements
 	public boolean callCommon(TransactionCommand... commands){
 			return saveReCall(prepareTransaction(commands));
 	}
-	
+	@Override
+	public boolean callCommonWithThread(TransactionCommand localCommand,TransactionCommand...commands){
+		return saveReCall(prepareTransactionWithThread(localCommand, commands));
+	}
 	/**
 	 * 查询接口
 	 * @param host
@@ -130,7 +136,7 @@ public abstract class OaBaseServiceImpl<T> extends BaseServiceImpl<T> implements
 	@Override
 	public RetObj<T> query(String host,String packagez,String action,NameValuePair... parms){
 		try {
-			System.out.println(getClass().getMethod("query").getGenericReturnType());
+//			System.out.println(getClass().getMethod("query").getGenericReturnType());
 			return CallUtil.query(host, packagez, action,this.getClass().getDeclaredMethod("query").getGenericReturnType(), parms);
 		} catch (Exception e) {
 			logger.error("接口对接失败",e);

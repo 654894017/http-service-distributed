@@ -70,13 +70,16 @@ public class CallUtil {
 		String retSeqId = HttpUtil.httpPost(host, uri, parms);
 		long retCode = retCode(retSeqId);
 		if (retCode > 0) {
-			if(null==commitService){
-				commitService = (CommitService) HttpServiceUtil.getBean("commitService");
-			}
-			return commitService.save(new HttpServiceCommit(host, packagez, action, HttpServiceMethod.get(methodPrepare.ordinal()+1).name(), retCode));
-
+//			if(null==commitService){
+//				commitService = (CommitService) HttpServiceUtil.getBean("commitService");
+//			}
+/**
+ * 将预处理的事务对象 转至TransactionService中持久化（多线程Spring事务无法传播）			
+ */
+//			return commitService.save(new HttpServiceCommit(host, packagez, action, HttpServiceMethod.get(methodPrepare.ordinal()+1).name(), retCode));
+			return new HttpServiceCommit(host, packagez, action, HttpServiceMethod.get(methodPrepare.ordinal()+1).name(), retCode);
 		} else {
-			throw new ZAQhttpException(logger, "接口请求save or update事务 失败，失败代码" + retCode);
+			throw new ZAQhttpException(logger, "接口请求预处理事务 失败，失败代码" + retCode);
 		}
 
 	}
@@ -95,9 +98,9 @@ public class CallUtil {
 		try {
 			String retSeqId = HttpUtil.httpPost(commit.getHost(), commit.getUri(), new BasicNameValuePair(HttpServiceUtil.HTTP_ARG_SEQID, commit.getSeqId() + ""));
 			long retCode = retCode(retSeqId);
-			if(null==commitService){
-				commitService = (CommitService) HttpServiceUtil.getBean("commitService");
-			}
+//			if(null==commitService){
+//				commitService = (CommitService) HttpServiceUtil.getBean("commitService");
+//			}
 			
 			if (retCode > 0 && retCode == commit.getSeqId()) {
 				// 清除本地信息 操作成功返回true 失败记录log日志

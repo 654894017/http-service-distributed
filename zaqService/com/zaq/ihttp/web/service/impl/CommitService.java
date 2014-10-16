@@ -16,7 +16,13 @@ public class CommitService extends HibernateDaoSupport implements ICommitService
 		commit.setId((Long)(getHibernateTemplate().save(commit)));
 		return commit ;
 	}
-	
+	public HttpServiceCommit[] save(HttpServiceCommit[] commits){
+		for(int i=0;i<commits.length;i++){
+			commits[i].setId((Long)(getHibernateTemplate().save(commits[i])));
+		}
+		
+		return commits ;
+	}
 	public HttpServiceCommit reSendAdd(long id,long errorCode){
 		HttpServiceCommit commit=(HttpServiceCommit) getSession().get(HttpServiceCommit.class, id);
 		commit.setCountReSend(commit.getCountReSend()+1);

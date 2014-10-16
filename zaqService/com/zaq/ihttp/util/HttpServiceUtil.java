@@ -21,6 +21,7 @@ import com.zaq.ihttp.web.server.HttpServiceBaseAction;
  */
 public class HttpServiceUtil  implements ApplicationContextAware {
 	public final static String[] METHODS=HttpServiceMethod.toStrArray();
+	public final static String HTTP_ARG_DELS="delIds";
 	public final static String HTTP_ARG_SEQID="seqId";
 	public final static String HTTP_ARG_JSONOBJ="jsonObj";
 	private static Logger logger=Logger.getLogger(HttpServiceUtil.class);
@@ -120,7 +121,7 @@ public class HttpServiceUtil  implements ApplicationContextAware {
 					break;
 				
 				case 2:
-					retSeqId=httpService.delPrepare(req);
+					retSeqId=httpService.del(req.getParameterValues(HTTP_ARG_DELS));
 					break;
 
 				case 3:

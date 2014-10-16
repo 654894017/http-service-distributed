@@ -18,6 +18,12 @@ public interface ICommitService{
 	 */
 	public HttpServiceCommit save(HttpServiceCommit commit);
 	/**
+	 * 请求的预处理成功后 保存多个事务
+	 * @param commits 事务对象数组
+	 * @return
+	 */
+	public HttpServiceCommit[] save(HttpServiceCommit[] commits);
+	/**
 	 * 事务提交失败后，更新事务对象
 	 * @param id 提交事务ID
 	 * @param errorCode 处理失败返回的错误码

@@ -19,9 +19,18 @@ public interface ITransactionService<T>{
 	 * 打开一个事务，用以组装成一个事务 按顺序执行
 	 * @param commands 需要处理的多个事务命令 
 	 * 
-	 * @return 返回每个业务预处理后的提交事务  本地业务 请返回空
+	 * @return 返回每个业务预处理后的提交事务  本地业务 返回空
 	 */
 	public HttpServiceCommit[] prepareTransaction(TransactionCommand...commands);
+	
+	/**
+	 * 打开一个事务，用以组装成一个事务 按多线程的方式执行(提高执行效率)
+	 * @param localCommand 需要处理的本地事务命令
+	 * @param commands 需要处理的多个远程事务命令 
+	 * 
+	 * @return 返回每个业务预处理后的提交事务  本地业务 不用返回
+	 */
+	public HttpServiceCommit[] prepareTransactionWithThread(TransactionCommand localCommand,TransactionCommand...commands);
 	/**
 	 * 分布式业务一个远程预处理【保存或更新】
 	 * @param host
@@ -47,7 +56,7 @@ public interface ITransactionService<T>{
 	 *            要保存的对象
 	 * @return  返回一个远程调用的预处理
 	 */
-	public HttpServiceCommit prepareRemove(final String host,final String packagez,final String action,final Long... ids)throws Exception;
+	public HttpServiceCommit prepareRemove(final String host,final String packagez,final String action,final Long... ids);
 	
 	/**
 	 * 开启分布式提交所有操作的事务

@@ -21,9 +21,12 @@ public abstract class HttpServiceBaseAction<T> implements IHttpDelService<T>,IHt
 		return saveOrUpdatePrepare(obj);
 	}
 	
-//	public long update(String jsonObj){
-//		Gson gson=new Gson();
-//		T obj=gson.fromJson(jsonObj, TypeUtil.getSuperclassTypeParameter(getClass()));
-//		return updatePrepare(obj);
-//	}
+	public long del(String... delIds){
+		Long[] delIdLongs=new Long[delIds.length];
+		for(int i=0;i<delIds.length;i++){
+			delIdLongs[i]=Long.valueOf(delIds[i]);
+		}
+		
+		return delPrepare(delIdLongs);
+	}
 }
