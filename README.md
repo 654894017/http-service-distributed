@@ -3,6 +3,7 @@ http-service-distributed
 
 http-service-distributed分布式业务补偿型事务框架
 HTTP SERVICE 框架使用文档（详见/release/文档.docx）
+FIXYOUR:（详见/release/文档.docx）
 1.httpService-zaq介绍
   httpService-zaq是一个基本http协议开发的分布式事务控制业务处理框架，提供了一套快速开发分布事务接口和客户端调用的的解决方案（见下图），事务控制属于【业务补偿型事务】，它强烈的拥抱了Spring,现在持久层暂时只以Hibernate处理，以原始的Servlet做控制，开发出的接口正则格式为：^http://.*?/httpService/.*?/.*?/.*?$解析后servlet-mapping为/httpService/{模块}/{Action}/{方法}
 {模块}：eg ：struts2 的nameSpace
