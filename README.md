@@ -133,3 +133,10 @@ action中对分布式事务处理的接口调用demo如下
 测试调用客户端的地址为http://localhost/ljt/system/callTestAppUser.do
 5.接口说明：
 详细见接口说明文档javadoc
+
+
+作者：章英杰
+
+联系方式：382566697@qq.com
+
+
