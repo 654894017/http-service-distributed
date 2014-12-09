@@ -164,7 +164,9 @@ public class CallUtil {
 			if (retCode > 0) {
 				
 				//执行远程事务提交后的业务操作
-				opeaterInTransaction.execute(commit,retCode);
+				if(null!=opeaterInTransaction){
+					opeaterInTransaction.execute(commit,retCode);
+				}
 				// 清除本地信息 操作成功返回true 失败记录log日志
 				commitService.del(commit);
 				retBoo = true;
