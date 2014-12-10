@@ -20,6 +20,7 @@ import com.zaq.ihttp.web.server.HttpServiceBaseAction;
  *
  */
 public class HttpServiceUtil  implements ApplicationContextAware {
+	private static ThreadLocal<HttpServletRequest> request=new ThreadLocal<HttpServletRequest>();
 	public final static String[] METHODS=HttpServiceMethod.toStrArray();
 	public final static String HTTP_ARG_DELS="delIds";
 	public final static String HTTP_ARG_SEQID="seqId";
@@ -36,6 +37,14 @@ public class HttpServiceUtil  implements ApplicationContextAware {
 	}
 	public static Object getBean(String beanName){
 		return springContext.getBean(beanName);
+	}
+	
+	
+	public static HttpServletRequest getRequest() {
+		return request.get();
+	}
+	public static void setRequest(HttpServletRequest req) {
+		request.set(req);
 	}
 	/**
 	 * 将url组装成restful风格
