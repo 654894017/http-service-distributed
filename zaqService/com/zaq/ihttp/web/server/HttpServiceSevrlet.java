@@ -39,6 +39,8 @@ public class HttpServiceSevrlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//设置全局HttpServletRequest对象
+		HttpServiceUtil.setRequest(req);
 		resp.setContentType("text/html;charset=utf-8");
 		if(!fireWall(req)){
 			resp.getWriter().write(HttpUtil.ACCESSDENIED);
