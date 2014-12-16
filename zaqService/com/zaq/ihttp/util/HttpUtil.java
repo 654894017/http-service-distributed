@@ -92,6 +92,7 @@ public class HttpUtil {
 		} catch (Exception e) {
 			logger.error(postUrl+"请求异常",e);
 			retVal= ERROR;
+		}finally{
 			httpPost.abort();
 		}
 		return retVal;
@@ -136,6 +137,7 @@ public class HttpUtil {
 		} catch (Exception e) {
 			logger.error(sb.toString()+"请求异常",e);
 			retVal= ERROR;
+		}finally{
 			httpget.abort();
 		}
 		return retVal;
