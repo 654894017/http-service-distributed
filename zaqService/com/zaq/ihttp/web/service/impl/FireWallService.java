@@ -33,7 +33,7 @@ public class FireWallService extends HibernateDaoSupport implements IFireWallSer
 	}
 	@Override
 	public void save(HttpServiceFirewall firewall){
-		getHibernateTemplate().save(firewall);
+		getHibernateTemplate().saveOrUpdate(firewall);
 		cache.put(firewall.getIp()+firewall.getUserName(), firewall);
 	}
 
